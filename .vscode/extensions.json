@@ -1,0 +1,10 @@
+{
+  "recommendations": [
+    "Vue.volar",
+    "thisismanta.stylus-supremacy",
+    "biomejs.biome",
+    "antfu.unocss",
+    "sysoev.language-stylus",
+    "stylelint.vscode-stylelint"
+  ]
+}
