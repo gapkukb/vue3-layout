@@ -26,5 +26,6 @@
     "source.fixAll": "explicit",
     "source.fixAll.stylelint": "explicit"
   },
-  "eslint.enable": false
+  "eslint.enable": false,
+  "typescript.preferences.preferTypeOnlyAutoImports": true
 }

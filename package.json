@@ -12,6 +12,7 @@
     "stylelint": "stylelint src/**/*.{scss,styl,vue}  --fix --quiet-deprecation-warnings"
   },
   "dependencies": {
+    "axios": "^1.8.3",
     "lodash": "npm:lodash-es@^4.17.21",
     "vant": "^4.9.17",
     "vue": "^3.5.13",
@@ -27,9 +28,13 @@
     "@rsbuild/plugin-stylus": "^1.0.8",
     "@rsbuild/plugin-vue": "^1.0.7",
     "@rsbuild/plugin-vue-jsx": "^1.1.0",
+    "@types/express": "^5.0.0",
+    "@types/lodash": "^4.17.16",
     "@unocss/postcss": "66.1.0-beta.5",
     "@unocss/reset": "66.1.0-beta.5",
     "@unocss/webpack": "66.1.0-beta.5",
+    "express": "^4.21.2",
+    "jsonwebtoken": "^9.0.2",
     "postcss": "^8.5.3",
     "postcss-html": "^1.8.0",
     "postcss-px-to-viewport-8-plugin": "^1.2.5",
