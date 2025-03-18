@@ -7,6 +7,7 @@ import { pluginStylus } from "@rsbuild/plugin-stylus";
 import AutoImport from "unplugin-auto-import/rspack";
 import Components from "unplugin-vue-components/rspack";
 import { VantResolver } from "unplugin-vue-components/resolvers";
+import proxy from "./build/proxy";
 
 const { publicVars: definitions } = loadEnv({ prefixes: ["VUE_APP_"] });
 const distAssets = "assets";
@@ -56,4 +57,5 @@ export default defineConfig({
       ],
     },
   },
+  server: { proxy },
 });
