@@ -1,4 +1,4 @@
-import type { ProxyConfig, ServerConfig } from "@rsbuild/core";
+import type { ProxyConfig } from "@rsbuild/core";
 const url: Record<string, string> = {
   servebuild: "https://www.arenaplus.com",
   serve: "https://arenaplus.uatext66ap.com",
@@ -16,14 +16,23 @@ console.log(
   `\n+++++++++++++++++++++  proxy ==> ${finallyUrl}  +++++++++++++++++++++\n`
 );
 
-export default <ProxyConfig>[
-  {
-    context: ["/_thirdpart_api_", "/_front_api_"],
+// export default <ProxyConfig>[
+//   {
+//     context: ["/_thirdpart_api_", "/_front_api_"],
+//     logLevel: "debug",
+//     target: "https://arenaplus.uatext66ap.com",
+//     // pathRewrite: {
+//     //   "/_thirdpart_api_": "",
+//     //   "/_front_api_": "",
+//     // },
+//   },
+// ];
+export default <ProxyConfig>{
+  "/api": {
+    target: "http://localhost:9980",
+    secure: false,
+    changeOrigin: true,
+    // pathRewrite: { "^/api": "" },
     logLevel: "debug",
-    target: "https://arenaplus.uatext66ap.com",
-    // pathRewrite: {
-    //   "/_thirdpart_api_": "",
-    //   "/_front_api_": "",
-    // },
   },
-];
+};

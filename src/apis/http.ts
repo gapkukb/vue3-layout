@@ -29,6 +29,8 @@ export const http2 = http.copyWith({
   baseURL: "/_thirdpart_api_",
 });
 
-http2.eject();
-
 export default http;
+
+export function setAuthorization(value: string) {
+  http.inst.defaults.headers.common.Authorization = `Bearer ${value}`;
+}
