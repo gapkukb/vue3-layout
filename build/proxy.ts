@@ -16,6 +16,17 @@ console.log(
   `\n+++++++++++++++++++++  proxy ==> ${finallyUrl}  +++++++++++++++++++++\n`
 );
 
+// export default <ProxyConfig>[
+//   {
+//     context: ["/_thirdpart_api_", "/_front_api_"],
+//     logLevel: "debug",
+//     target: "https://arenaplus.uatext66ap.com",
+//     // pathRewrite: {
+//     //   "/_thirdpart_api_": "",
+//     //   "/_front_api_": "",
+//     // },
+//   },
+// ];
 export default <ProxyConfig>{
   "/api": {
     target: "http://localhost:9980",

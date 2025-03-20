@@ -1,73 +1,88 @@
 import axios, {
+  mergeConfig,
   type AxiosInstance,
   type AxiosRequestConfig,
   type CreateAxiosDefaults,
   type Method,
-  mergeConfig,
 } from "axios";
-import type { Dictionary } from "lodash";
 
-type M = Lowercase<Method>;
+type HttpMethd = Extract<Lowercase<Method>, "get" | "post" | "put" | "delete">;
+type Dispatcher = ReturnType<(typeof Http)["_create"]>;
+type HttpMethds = Record<HttpMethd, Dispatcher>;
 
-export default class Http {
+export default class Http implements HttpMethds {
+  private static _withoutInstance = true;
+  private static _methods: HttpMethds = {
+    get: this._create("get"),
+    post: this._create("post"),
+    put: this._create("put"),
+    delete: this._create("delete"),
+  };
+
+  private static _create(method: HttpMethd) {
+    const key: keyof AxiosRequestConfig = method === "get" ? "params" : "data";
+    return function wrap<
+      Res = any,
+      Req extends Record<string | number, any> | unknown = unknown
+    >(this: Http, url: string, wrapperOption?: AxiosRequestConfig) {
+      const _this = this as Http;
+      return function dispatch(payload: Req, option?: AxiosRequestConfig) {
+        if (wrapperOption && option) {
+          option = mergeConfig(wrapperOption, option);
+        } else {
+          option ||= wrapperOption;
+        }
+
+        return _this.inst.request<Req, Res>({
+          method,
+          url,
+          [key]: payload,
+          ...option,
+        });
+      };
+    };
+  }
+
   inst!: AxiosInstance;
-  #plugins = new WeakMap<Function, number>();
+  declare get: Dispatcher;
+  declare post: Dispatcher;
+  declare put: Dispatcher;
+  declare delete: Dispatcher;
+
   constructor(option: CreateAxiosDefaults) {
     this.inst = axios.create(option);
+    this.#mergeMethods();
   }
 
-  get(url: string, option?: AxiosRequestConfig) {
-    return this.#request("get", "params", url, option);
-  }
-  post(url: string, option?: AxiosRequestConfig) {
-    return this.#request("post", "data", url, option);
-  }
-  put(url: string, option?: AxiosRequestConfig) {
-    return this.#request("put", "data", url, option);
-  }
-  delete(url: string, option?: AxiosRequestConfig) {
-    return this.#request("delete", "params", url, option);
+  use(plugin: (http: this) => any) {
+    plugin(this);
   }
 
-  use(plugin: (ins: Http) => any) {
-    // this.#plugins.set(plugin, index);
-    return plugin(this);
+  eject() {
+    this.inst.interceptors.response.eject(0);
   }
-
-  // eject(plugin: (ins: AxiosInstance) => any) {
-  //   return this.#ins.interceptors.request.eject(plugin);
-  // }
 
   copyWith(option: CreateAxiosDefaults) {
-    const ins = new Http(option);
-    this.inst.request({
-      method: "get",
+    const clone = <T extends object>(to: T, from: T) => {
+      const k = "handlers";
+      Reflect.set(to, k, Array.from(Reflect.get(from, k) as Array<any>));
+    };
+
+    const newer = new Http({
+      ...this.inst.defaults,
+      ...option,
     });
-    return ins;
+
+    clone(newer.inst.interceptors.request, this.inst.interceptors.request);
+    clone(newer.inst.interceptors.response, this.inst.interceptors.response);
+
+    return newer;
   }
 
-  #request(
-    method: M,
-    key: "params" | "data",
-    url: string,
-    declOption?: AxiosRequestConfig
-  ) {
-    return (payload?: Dictionary<any>, option: AxiosRequestConfig = {}) => {
-      if (declOption) {
-        option = mergeConfig(option, declOption);
-      }
-      if (payload) {
-        option[key] = {
-          ...option[key],
-          ...payload,
-        };
-      }
-
-      return this.inst.request({
-        method,
-        url,
-        ...option,
-      });
-    };
+  #mergeMethods() {
+    if (Http._withoutInstance) {
+      Object.assign(this.constructor.prototype, Http._methods);
+    }
+    Http._withoutInstance = false;
   }
 }

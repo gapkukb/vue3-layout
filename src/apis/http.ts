@@ -1,8 +1,32 @@
 import { Http, refreshToken } from "../http";
 import { refresh } from "./user";
 
-const http = new Http({
-  baseURL: "/api",
+const http = new Http({ baseURL: "/_front_api_" });
+
+http.use(
+  errorPlugin({
+    handlers: errors,
+    handle: console.log,
+  })
+);
+
+http.use(
+  loadingPlugin({
+    enable: true,
+    onTrigger(loading) {
+      console.log("loading", loading);
+    },
+  })
+);
+http.use(
+  normalizePlugin({
+    enable: true,
+    debug: true,
+  })
+);
+
+export const http2 = http.copyWith({
+  baseURL: "/_thirdpart_api_",
 });
 
 http.use(
