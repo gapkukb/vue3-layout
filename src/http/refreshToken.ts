@@ -28,16 +28,13 @@ export default function refreshTokenPlugin(option: RefreshTokenPluginOption) {
   const { trigger = "error", validate = $validate, refresh } = option;
 
   async function doRefresh(result: AxiosResult) {
+    const ret = axios.isAxiosError(result) ? Promise.reject(result) : result;
     //@ts-ignore
-    if (validate(result)) {
-      const config = await refresh(result.config!);
-      if (config) {
-        await result.request(config);
-      } else {
-      }
-    }
-
-    return axios.isAxiosError(result) ? Promise.reject(result) : result;
+    if (validate(result)) return ret;
+    const config = await refresh(result.config!);
+    if (!config) return ret;
+    debugger;
+    return await result.request(config);
   }
 
   return function refreshToken(http: Http) {

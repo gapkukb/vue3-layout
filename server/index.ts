@@ -15,7 +15,7 @@ app.get("/api/protected", (req, res) => {
 });
 
 app.get("/api/login", (req, res) => {
-  const token = jwt.sign({ foo: "bar" }, "shhhhh", { expiresIn: "3s" });
+  const token = jwt.sign({ foo: "bar" }, "shhhhh", { expiresIn: "1s" });
   const refreshToken = jwt.sign({ foo: "bar" }, "shhhhh", { expiresIn: "7d" });
 
   res.json({
@@ -25,7 +25,7 @@ app.get("/api/login", (req, res) => {
 });
 
 app.get("/api/refreshToken", (req, res) => {
-  const token = jwt.sign({ foo: "bar" }, "shhhhh", { expiresIn: "3s" });
+  const token = jwt.sign({ foo: "bar" }, "shhhhh", { expiresIn: "1s" });
 
   res.json({
     token,

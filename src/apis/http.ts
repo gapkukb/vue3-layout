@@ -1,27 +1,44 @@
-import { Http, errorPlugin, loadingPlugin, normalizePlugin } from "../http";
+import {
+  Http,
+  errorPlugin,
+  loadingPlugin,
+  normalizePlugin,
+  refreshToken,
+} from "../http";
 import errors from "./errors";
+import { refresh } from "./user";
 
-const http = new Http({ baseURL: "/_front_api_" });
+// const http = new Http({ baseURL: "/_front_api_" });
+const http = new Http({ baseURL: "/api" });
+
+// http.use(
+//   errorPlugin({
+//     handlers: errors,
+//     handle: console.log,
+//   })
+// );
+
+// http.use(
+//   loadingPlugin({
+//     enable: true,
+//     onTrigger(loading) {
+//       console.log("loading", loading);
+//     },
+//   })
+// );
+// http.use(
+//   normalizePlugin({
+//     enable: true,
+//     debug: true,
+//   })
+// );
 
 http.use(
-  errorPlugin({
-    handlers: errors,
-    handle: console.log,
-  })
-);
-
-http.use(
-  loadingPlugin({
-    enable: true,
-    onTrigger(loading) {
-      console.log("loading", loading);
+  refreshToken({
+    async refresh(config) {
+      const resp = await refresh();
+      return config;
     },
-  })
-);
-http.use(
-  normalizePlugin({
-    enable: true,
-    debug: true,
   })
 );
 

@@ -1,21 +1,23 @@
 <script setup lang="ts">
-import { access, login, refresh, setAuthorization } from '@/apis';
+import { access, login, refresh, setAuthorization } from "@/apis";
 
-let refreshToken: string
+let refreshToken: string;
 async function _login() {
   const a = await login();
-  refreshToken = a.data.refreshToken
+  console.log("登录");
+  refreshToken = a.data.refreshToken;
 
   setAuthorization(a.data.token);
-
 }
 async function _access() {
-  access()
+  await access();
+  console.log("受保护的资源！！");
 }
 async function _refresh() {
   const a = await refresh();
-  setAuthorization(a.data.token);
+  console.log("刷新token");
 
+  setAuthorization(a.data.token);
 }
 </script>
 <template>
