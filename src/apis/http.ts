@@ -1,11 +1,4 @@
-import {
-  Http,
-  errorPlugin,
-  loadingPlugin,
-  normalizePlugin,
-  refreshToken,
-} from "../http";
-import errors from "./errors";
+import { Http, refreshToken } from "../http";
 import { refresh } from "./user";
 
 // const http = new Http({ baseURL: "/_front_api_" });
@@ -45,6 +38,16 @@ http.use(
 export const http2 = http.copyWith({
   baseURL: "/_thirdpart_api_",
 });
+
+http.use(
+  refreshToken({
+    async refresh(http) {
+      const resp = await refresh();
+      setAuthorization(resp.data.token);
+      return !!resp.data.token;
+    },
+  })
+);
 
 export default http;
 

@@ -14,6 +14,7 @@
     "resolveJsonModule": true,
     "moduleResolution": "bundler",
     "allowImportingTsExtensions": true,
+    "noImplicitAny": false,
 
     /* type checking */
     "strict": true,
