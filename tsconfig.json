@@ -2,10 +2,10 @@
   "compilerOptions": {
     "lib": ["DOM", "ESNext"],
     "jsx": "preserve",
+    "jsxImportSource": "vue",
     "target": "ESNext",
     "noEmit": true,
     "skipLibCheck": true,
-    "jsxImportSource": "vue",
     "useDefineForClassFields": true,
 
     /* modules */
@@ -26,6 +26,12 @@
       "@/*": ["src/*"]
     }
   },
-  "include": ["src", "typing"],
+  "include": [
+    "typing",
+    "src/**/*.ts",
+    "src/**/*.d.ts",
+    "src/**/*.tsx",
+    "src/**/*.vue"
+  ],
   "exclude": ["node_modules"]
 }

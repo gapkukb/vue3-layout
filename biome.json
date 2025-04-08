@@ -9,7 +9,8 @@
     "useIgnoreFile": true
   },
   "formatter": {
-    "indentStyle": "space"
+    "indentStyle": "space",
+    "lineWidth": 220
   },
   "javascript": {
     "formatter": {
@@ -24,7 +25,7 @@
   "linter": {
     "enabled": true,
     "rules": {
-      "suspicious":{"noExplicitAny":"off"},
+      "suspicious": { "noExplicitAny": "off" },
       "recommended": true,
       "style": {
         "noNonNullAssertion": "off",

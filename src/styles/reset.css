@@ -34,16 +34,22 @@
   color: inherit;
 }
 :where(a, button, input, textarea, select, img, svg, video) {
-  display: block;
+  display: inline-flex;
   max-width: 100%;
+  vertical-align: middle;
 }
 
 :where(h1, h2, h3, h4, h5, h6, a, button, input, textarea) {
   font: inherit;
 }
 
-:where(dl, ol, ul) {
+:where(dl, ol:not([type]), ul:not([type])) {
   list-style: none;
+}
+
+ol[type="I"] {
+  list-style-type: upper-roman;
+  list-style-position: inside;
 }
 
 :where(hr) {
@@ -99,7 +105,7 @@
   font: inherit;
 }
 
-:where(dialog) {
+/* :where(dialog) {
   background-color: #fff;
   border: solid;
   width: -moz-fit-content;
@@ -111,13 +117,16 @@
   position: absolute;
   left: 0;
   right: 0;
-}
+} */
 
-:where(dialog:not([open])) {
+/* :where(dialog:not([open])) {
   display: none;
-}
+} */
 
 :where(iframe, img, input, video, select, textarea) {
   max-width: 100%;
   height: auto;
+}
+:root {
+  --transparent: url("data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///wAAACH5BAEAAAAALAAAAAABAAEAAAICRAEAOw==");
 }

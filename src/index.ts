@@ -1,25 +1,13 @@
-import "./styles";
-import { createApp } from "vue";
-import App from "./App.vue";
-import { queryUser, queryUser2 } from "./apis";
+import './styles';
+import 'iconify-icon';
+import { createApp } from 'vue';
+import App from './App.vue';
+import router from './router';
+import pinia from './pinia';
+import boot from './boot';
 
-createApp(App).mount("#app");
+const app = createApp(App).use(pinia).use(router);
 
-// queryUser({
-//   id: null,
-//   name: undefined,
-//   age: 0,
-//   sex: "",
-//   hobbi: [],
-//   grade: NaN,
-//   address: {},
-// });
-// queryUser2(undefined, {
-//   //   loading: true,
-// });
-// queryUser(undefined, {
-//   //   loading: true,
-// });
-// queryUser2(undefined, {
-//   //   loading: true,
-// });
+boot().then(() => {
+  app.mount('#app');
+});
