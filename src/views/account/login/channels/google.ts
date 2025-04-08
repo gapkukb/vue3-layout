@@ -11,3 +11,44 @@ export default async function loginByGoogle(form: object) {
 
   return 'Login successful with Facebook';
 }
+
+loadFBSDK();
+{
+  const FBID = '669336371272264';
+  const params = `#version=v15.0&appId=${FBID}&status=true&xfbml=false&autoLogAppEvents=true`;
+  ((d, s, id) => {
+    let js;
+    const fjs = d.getElementsByTagName(s)[0];
+    if (d.getElementById(id)) return;
+    js = d.createElement(s);
+    js.id = id;
+    js.async = !0;
+    js.defer = !0;
+    js.src = 'https://connect.facebook.net/en_US/sdk.js' + params;
+    fjs.parentNode.insertBefore(js, fjs);
+  })(document, 'script', 'facebook-jssdk');
+}
+,
+loadGoogleSDK()
+{
+  ((d, s, id) => {
+    let js;
+    const fjs = d.getElementsByTagName(s)[0];
+    if (d.getElementById(id)) return;
+    js = d.createElement(s);
+    js.id = id;
+    js.async = !0;
+    js.defer = !0;
+    js.src = 'https://accounts.google.com/gsi/client';
+    fjs.parentNode.insertBefore(js, fjs);
+  })(document, 'script', 'google-jssdk');
+
+  document.querySelector('#google-jssdk').onload = () => {
+    this.googleLoad = google;
+  };
+
+  try {
+    this.googleLoad = google;
+  } catch (error) {}
+}
+,
