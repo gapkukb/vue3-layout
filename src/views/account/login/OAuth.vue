@@ -1,5 +1,9 @@
 <script setup lang="ts">
 import { Channels } from "./channels";
+import OAuthConfrimation from './OAuthConfrimation.vue';
+
+const show = ref(true)
+const agree = ref(false)
 
 const emit = defineEmits<{
   login: [channel: Channels];
@@ -30,6 +34,7 @@ function useFacebook() {
       Facebook
     </van-button>
   </div>
+  <OAuthConfrimation v-model="show" v-model:agree="agree" />
 </template>
 
 <style lang="scss"></style>

@@ -6,6 +6,8 @@ import OAuth from "./OAuth.vue";
 import Terms from "./Terms.vue";
 import login, { Channels } from "./channels";
 import { noop } from "lodash";
+import { yamiLoader } from 'yami-loader';
+
 
 defineOptions({
   name: RouteNames.LOGIN,
@@ -25,6 +27,7 @@ const passwordRules: FieldRule[] = [
 const channelText = computed(() =>
   sms.value ? "Login With Password" : "Register Or Login With Verification Code"
 );
+
 
 let abort = noop;
 function agree() {
@@ -53,33 +56,15 @@ async function oauth(channel: Channels) {
 </script>
 
 <template>
-  <div
-    class="login"
-    :style="{
-      '--bg': `url(./img.jpg)`,
-    }"
-  >
-    <van-form
-      ref="form"
-      class="grid gap-16"
-      @submit="submit"
-      @failed="console.error"
-    >
+  <div class="login" :style="{
+    '--bg': `url(./img.jpg)`,
+  }">
+    <van-form ref="form" class="grid gap-16" @submit="submit" @failed="console.error">
       <AccountInput v-model="username" placeholder="Begin with 9xx xxx xxxx" />
 
-      <van-field
-        v-if="!sms"
-        :autofocus="false"
-        v-model="password"
-        validate-trigger="onBlur"
-        clearable
-        :type="eyeoff ? 'password' : 'text'"
-        :right-icon="eyeoff ? 'closed-eye' : 'eye-o'"
-        placeholder="Password"
-        maxlength="16"
-        :rules="passwordRules"
-        @click-right-icon="eyeoff = !eyeoff"
-      />
+      <van-field v-if="!sms" :autofocus="false" v-model="password" validate-trigger="onBlur" clearable
+        :type="eyeoff ? 'password' : 'text'" :right-icon="eyeoff ? 'closed-eye' : 'eye-o'" placeholder="Password"
+        maxlength="16" :rules="passwordRules" @click-right-icon="eyeoff = !eyeoff" />
 
       <button class="text-12 text-right block text-blue">Forgot?</button>
 
@@ -115,12 +100,7 @@ async function oauth(channel: Channels) {
     </div>
   </div>
 
-  <van-popup
-    position="bottom"
-    v-model:show="showTerms"
-    class="p-16 grid gap-16"
-    @closed="abort"
-  >
+  <van-popup position="bottom" v-model:show="showTerms" class="p-16 grid gap-16" @closed="abort">
     <div class="text-center">
       <van-icon name="info-o" color="#ff5267" class="!text-64" />
     </div>
@@ -142,13 +122,13 @@ async function oauth(channel: Channels) {
   @apply px-16 pt-300;
   // background: var(--bg) no-repeat 0 0/100% auto;
   background: var(--bg) no-repeat center 0 / auto 300px,
-    linear-gradient(
-      to bottom,
+    linear-gradient(to bottom,
       rgba(0, 0, 0, 0) 200px,
-      rgba(255, 255, 255, 1) 300px
-    );
-  background-blend-mode: overlay; /* 设置混合模式 */
+      rgba(255, 255, 255, 1) 300px);
+  background-blend-mode: overlay;
+  /* 设置混合模式 */
 }
+
 .van-checkbox__icon--round .van-icon {
   border-radius: 4px;
 }

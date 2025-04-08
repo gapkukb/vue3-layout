@@ -8,6 +8,7 @@ export {}
 /* prettier-ignore */
 declare module 'vue' {
   export interface GlobalComponents {
+    AccountInput: typeof import('./../src/components/AccountInput/index.vue')['default']
     IconDeviconFacebook: typeof import('~icons/devicon/facebook')['default']
     IconDeviconGoogle: typeof import('~icons/devicon/google')['default']
     IconEiArrowRight: typeof import('~icons/ei/arrow-right')['default']
