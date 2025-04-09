@@ -1,0 +1,5 @@
+{
+    "provider_urls": [ "https://localhost:8080/login" ],
+    "accounts_endpoint": "https://localhost:8080/login",
+    "login_url": "https://localhost:8080/login"
+  }

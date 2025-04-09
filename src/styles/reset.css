@@ -130,3 +130,6 @@ ol[type="I"] {
 :root {
   --transparent: url("data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///wAAACH5BAEAAAAALAAAAAABAAEAAAICRAEAOw==");
 }
+:root:root{
+  --spacing:0.26643vw;
+}

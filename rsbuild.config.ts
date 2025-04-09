@@ -11,6 +11,7 @@ import { VantResolver } from 'unplugin-vue-components/resolvers';
 import Icons from 'unplugin-icons/rspack';
 import IconsResolver from 'unplugin-icons/resolver';
 import proxy from './build/proxy';
+import { pluginBasicSsl } from '@rsbuild/plugin-basic-ssl';
 
 const { publicVars: definitions } = loadEnv({ prefixes: ['VUE_APP_'] });
 const distAssets = 'assets';
@@ -22,6 +23,7 @@ export default defineConfig({
     inject: 'body',
   },
   plugins: [
+    pluginBasicSsl(),
     pluginBabel({
       include: /\.(?:jsx|tsx)$/,
     }),

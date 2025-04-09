@@ -1,10 +1,16 @@
-import { defineConfig, presetMini, transformerDirectives } from 'unocss';
-
+import { defineConfig, presetWind4, transformerDirectives, presetAttributify } from 'unocss';
 import presetRemToVw from '@any-u/unocss-preset-rem-to-vw';
 
+const remRE = /(-?[.\d]+)rem/g;
 export default defineConfig({
+  theme: {
+    spacing: {
+      ...Array.from({ length: 100 }, (_, i) => `calc(var(--size)*${i}rem)`),
+    },
+  },
   presets: [
-    presetMini({}),
+    presetAttributify({}),
+    presetWind4({ reset: false }),
     presetRemToVw({
       baseFontSize: 4,
       // viewportWidth: 37.5,
