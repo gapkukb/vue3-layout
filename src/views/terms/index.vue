@@ -1,12 +1,15 @@
 <script setup lang="ts">
 import Terms from './Terms.vue';
 import Privacy from './Privacy.vue';
+
+
+const msg = ref('')
 </script>
 
 <template>
   <Terms />
   <Privacy />
-
+  <!-- <Intersect @enter="msg = 'Intersected'" @leave="msg = 'Not intersected'">{{ msg }}</Intersect> -->
 
 </template>
 

@@ -6,7 +6,7 @@ import LayoutDrawer from "./LayoutDrawer.vue";
 defineOptions({
   name: "Layout",
 });
-const showDrawer = ref(true);
+const showDrawer = ref(false);
 const route = useRoute();
 const cls = computed(() => {
   return route.matched.reduce((acc, i) => {
@@ -38,6 +38,11 @@ provide("showDrawer", showDrawer);
 .layout {
   display: flex;
   flex-direction: column;
-  height: 100vh;
+  min-height: 100vh;
+  min-height: 100dvh;
+
+  @supports (-webkit-touch-callout: none) {
+    min-height: -webkit-fill-available;
+  }
 }
 </style>

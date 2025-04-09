@@ -1,14 +1,10 @@
 import { ModalNames } from '@/consts/ModalNames';
-import { useApp } from '@/pinia';
+import { open, close } from './_controller';
 
-export default {
-  ModalNames,
-  open(name: ModalNames) {
-    const app = useApp();
-    app.modal = name;
-  },
-  close(name?: ModalNames) {
-    const app = useApp();
-    app.modal = name;
-  },
-};
+export const modals = {
+  open,
+  close,
+  name: ModalNames,
+} as const;
+
+export default modals;

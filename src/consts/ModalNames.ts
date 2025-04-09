@@ -1,5 +1,6 @@
 export enum ModalNames {
   // Add your modal names here
-  LOGIN,
-  USER,
+  LOGIN = 'login',
+  USER = 'user',
+  CONVERSATION = 'conversation',
 }

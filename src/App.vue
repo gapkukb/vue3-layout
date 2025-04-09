@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { useApp } from "./pinia";
-import Modal from "./views/Modal";
+import Modal from "./modal/Modal.vue";
 const app = useApp();
 </script>
 
