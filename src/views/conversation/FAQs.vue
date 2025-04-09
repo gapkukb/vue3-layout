@@ -1,15 +1,17 @@
 <script setup lang="ts">
 import FAQsItem from './FAQsItem.vue';
+const article = ref()
 </script>
 
 <template>
     <div>
         <van-nav-bar title="Conversation(s)">
             <template #left>
+                <icon-hugeicons:menu-square class="text-24" />
                 <Icon-bxs-conversation />
             </template>
             <template #title>
-
+                <ArenaPlus FAQs />
             </template>
             <template #right>
                 <van-icon name="search" size="18" />
