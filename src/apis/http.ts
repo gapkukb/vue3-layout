@@ -1,8 +1,13 @@
-import { Http, refreshToken } from "../http";
-import { refresh } from "./user";
+import { Http, refreshToken } from '../http';
+// import { refresh } from './user';
+import baseUrl from './baseUrl';
+import signPlugin from './sign';
 
 // const http = new Http({ baseURL: "/_front_api_" });
-const http = new Http({ baseURL: "/api" });
+const http = new Http({ baseURL: '/_glaxy_c66_/uat' });
+
+// http.use(baseUrl());
+http.use(signPlugin());
 
 // http.use(
 //   errorPlugin({
@@ -26,28 +31,28 @@ const http = new Http({ baseURL: "/api" });
 //   })
 // );
 
-http.use(
-  refreshToken({
-    async refresh(config) {
-      const resp = await refresh();
-      return config;
-    },
-  })
-);
+// http.use(
+//   refreshToken({
+//     async refresh(config) {
+//       const resp = await refresh();
+//       return config;
+//     },
+//   }),
+// );
 
-export const http2 = http.copyWith({
-  baseURL: "/_thirdpart_api_",
-});
+// export const http2 = http.copyWith({
+//   baseURL: '/_thirdpart_api_',
+// });
 
-http.use(
-  refreshToken({
-    async refresh(http) {
-      const resp = await refresh();
-      setAuthorization(resp.data.token);
-      return !!resp.data.token;
-    },
-  })
-);
+// http.use(
+//   refreshToken({
+//     async refresh(http) {
+//       const resp = await refresh();
+//       setAuthorization(resp.data.token);
+//       return !!resp.data.token;
+//     },
+//   }),
+// );
 
 export default http;
 

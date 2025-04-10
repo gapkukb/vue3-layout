@@ -29,7 +29,8 @@
       "recommended": true,
       "style": {
         "noNonNullAssertion": "off",
-        "noParameterAssign": "off"
+        "noParameterAssign": "off",
+        "useEnumInitializers": "off"
       }
     }
   }

@@ -1,4 +1,5 @@
 import { RouteNames } from '@/consts';
+import { ModalNames } from '@/consts/ModalNames';
 import type { RouteRecordRaw } from 'vue-router';
 
 export default (<RouteRecordRaw>{
@@ -9,7 +10,12 @@ export default (<RouteRecordRaw>{
     {
       path: '/login',
       name: RouteNames.LOGIN,
-      component: () => import('@/views/account/login/index.vue'),
+      component: () => import('@/views/login/index.vue'),
+    },
+    {
+      path: '/conversation',
+      name: ModalNames.CONVERSATION,
+      component: () => import('@/views/conversation/index.vue'),
     },
   ],
 });

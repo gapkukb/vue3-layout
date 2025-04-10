@@ -1,30 +1,21 @@
-import axios, {
-  mergeConfig,
-  type AxiosInstance,
-  type AxiosRequestConfig,
-  type CreateAxiosDefaults,
-  type Method,
-} from "axios";
+import axios, { mergeConfig, type AxiosInstance, type AxiosRequestConfig, type CreateAxiosDefaults, type Method } from 'axios';
 
-type HttpMethd = Extract<Lowercase<Method>, "get" | "post" | "put" | "delete">;
-type Dispatcher = ReturnType<(typeof Http)["_create"]>;
+type HttpMethd = Extract<Lowercase<Method>, 'get' | 'post' | 'put' | 'delete'>;
+type Dispatcher = ReturnType<(typeof Http)['_create']>;
 type HttpMethds = Record<HttpMethd, Dispatcher>;
 
 export default class Http implements HttpMethds {
   private static _withoutInstance = true;
   private static _methods: HttpMethds = {
-    get: this._create("get"),
-    post: this._create("post"),
-    put: this._create("put"),
-    delete: this._create("delete"),
+    get: this._create('get'),
+    post: this._create('post'),
+    put: this._create('put'),
+    delete: this._create('delete'),
   };
 
   private static _create(method: HttpMethd) {
-    const key: keyof AxiosRequestConfig = method === "get" ? "params" : "data";
-    return function wrap<
-      Res = any,
-      Req extends Record<string | number, any> | unknown = unknown
-    >(this: Http, url: string, wrapperOption?: AxiosRequestConfig) {
+    const key: keyof AxiosRequestConfig = method === 'get' ? 'params' : 'data';
+    return function wrap<Res = any, Req extends Record<string | number, any> | unknown = unknown>(this: Http, url: string, wrapperOption?: AxiosRequestConfig) {
       const _this = this as Http;
       return function dispatch(payload: Req, option?: AxiosRequestConfig) {
         if (wrapperOption && option) {
@@ -51,6 +42,8 @@ export default class Http implements HttpMethds {
 
   constructor(option: CreateAxiosDefaults) {
     this.inst = axios.create(option);
+    console.dir(this.inst);
+
     this.#mergeMethods();
   }
 
@@ -64,7 +57,7 @@ export default class Http implements HttpMethds {
 
   copyWith(option: CreateAxiosDefaults) {
     const clone = <T extends object>(to: T, from: T) => {
-      const k = "handlers";
+      const k = 'handlers';
       Reflect.set(to, k, Array.from(Reflect.get(from, k) as Array<any>));
     };
 
@@ -77,6 +70,16 @@ export default class Http implements HttpMethds {
     clone(newer.inst.interceptors.response, this.inst.interceptors.response);
 
     return newer;
+  }
+
+  setHeader(headers: Record<string, any>): void;
+  setHeader(headerName: string, value: any): void;
+  setHeader(headerName: Record<string, any> | string, value?: any): void {
+    if (typeof headerName === 'string') {
+      this.inst.defaults.headers.common[headerName] = value;
+    } else {
+      Object.assign(this.inst.defaults.headers.common, headerName);
+    }
   }
 
   #mergeMethods() {

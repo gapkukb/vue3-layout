@@ -23,7 +23,7 @@ export default defineConfig({
     inject: 'body',
   },
   plugins: [
-    pluginBasicSsl(),
+    // pluginBasicSsl(),
     pluginBabel({
       include: /\.(?:jsx|tsx)$/,
     }),

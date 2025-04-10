@@ -12,7 +12,7 @@ type ModalComponents = Record<ModalNames, DefineComponent | ModalProps>;
 const modals = <ModalComponents>{
   [ModalNames.LOGIN]: {
     position: 'bottom',
-    component: defineAsyncComponent(() => import('@/views/account/login/index.vue')),
+    component: defineAsyncComponent(() => import('@/views/login/index.vue')),
   },
   [ModalNames.CONVERSATION]: {
     position: 'bottom',
