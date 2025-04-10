@@ -1,10 +1,9 @@
 import { Http, refreshToken } from '../http';
 // import { refresh } from './user';
-import baseUrl from './baseUrl';
 import signPlugin from './sign';
 
 // const http = new Http({ baseURL: "/_front_api_" });
-const http = new Http({ baseURL: '/_glaxy_c66_/uat' });
+const http = new Http({ baseURL: '/_glaxy_c66_', allowAbsoluteUrls: false });
 
 // http.use(baseUrl());
 http.use(signPlugin());

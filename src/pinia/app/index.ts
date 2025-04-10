@@ -11,7 +11,10 @@ export default defineStore('app', () => {
   }
 
   function updateConfiguration() {
-    return queryAppConfiguration({}).then((res) => {
+    queryAppConfiguration({}).then((res) => {
+      configuration.value = res;
+    });
+    return queryAppConfiguration({}, { adapter: 'fetch' }).then((res) => {
       configuration.value = res;
     });
   }

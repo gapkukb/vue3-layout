@@ -17,63 +17,65 @@ const { publicVars: definitions } = loadEnv({ prefixes: ['VUE_APP_'] });
 const distAssets = 'assets';
 const dtsDir = 'typing';
 
-export default defineConfig({
-  html: {
-    template: 'public/index.html',
-    inject: 'body',
-  },
-  plugins: [
-    // pluginBasicSsl(),
-    pluginBabel({
-      include: /\.(?:jsx|tsx)$/,
-    }),
-    pluginVue(),
-    pluginVueJsx(),
-    pluginSass(),
-    pluginStylus(),
-  ],
+export default defineConfig(({ command, env, envMode, meta }) => {
+  return {
+    html: {
+      template: 'public/index.html',
+      inject: 'body',
+    },
+    plugins: [
+      // pluginBasicSsl(),
+      pluginBabel({
+        include: /\.(?:jsx|tsx)$/,
+      }),
+      pluginVue(),
+      pluginVueJsx(),
+      pluginSass(),
+      pluginStylus(),
+    ],
 
-  output: {
-    injectStyles: true,
-    distPath: {
-      js: `${distAssets}/js`,
-      css: `${distAssets}/css`,
-      media: `${distAssets}/media`,
-      assets: `${distAssets}/assets`,
-      svg: `${distAssets}/svg`,
-      image: `${distAssets}/image`,
-      wasm: `${distAssets}/wasm`,
-      font: `${distAssets}/font`,
-      jsAsync: `${distAssets}/js/asnyc`,
-      cssAsync: `${distAssets}/css/asnyc`,
+    output: {
+      injectStyles: true,
+      distPath: {
+        js: `${distAssets}/js`,
+        css: `${distAssets}/css`,
+        media: `${distAssets}/media`,
+        assets: `${distAssets}/assets`,
+        svg: `${distAssets}/svg`,
+        image: `${distAssets}/image`,
+        wasm: `${distAssets}/wasm`,
+        font: `${distAssets}/font`,
+        jsAsync: `${distAssets}/js/asnyc`,
+        cssAsync: `${distAssets}/css/asnyc`,
+      },
     },
-  },
-  source: {
-    define: definitions,
-    entry: {
-      index: path.resolve(__dirname, './src/index.ts'),
+    source: {
+      define: definitions,
+      entry: {
+        index: env === 'development' ? ['build/devUrl.ts', 'src/index.ts'] : ['src/index.ts'],
+      },
+      alias: {
+        '@': path.resolve(__dirname, 'src'),
+      },
     },
-    alias: {
-      '@': path.resolve(__dirname, 'src'),
+    tools: {
+      rspack: {
+        plugins: [
+          Icons({
+            scale: 1,
+          }),
+          AutoImport({
+            dts: `${dtsDir}/auto-imports.d.ts`,
+            resolvers: [VantResolver()],
+            imports: ['vue', 'vue-router', 'pinia', '@vueuse/core'],
+          }),
+          Components({
+            dts: `${dtsDir}/components.d.ts`,
+            resolvers: [VantResolver(), IconsResolver({ prefix: 'icon' })],
+          }),
+        ],
+      },
     },
-  },
-  tools: {
-    rspack: {
-      plugins: [
-        Icons({
-          scale: 1,
-        }),
-        AutoImport({
-          dts: `${dtsDir}/auto-imports.d.ts`,
-          resolvers: [VantResolver()],
-          imports: ['vue', 'vue-router', 'pinia', '@vueuse/core'],
-        }),
-        Components({
-          dts: `${dtsDir}/components.d.ts`,
-          resolvers: [VantResolver(), IconsResolver({ prefix: 'icon' })],
-        }),
-      ],
-    },
-  },
-  server: { proxy },
+    server: { proxy },
+  };
 });
