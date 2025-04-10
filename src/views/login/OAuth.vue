@@ -1,9 +1,9 @@
 <script setup lang="ts">
 import { Channels } from "./channels";
-import OAuthConfrimation from './OAuthConfrimation.vue';
+import OAuthConfrimation from "./OAuthConfrimation.vue";
 
-const show = ref(true)
-const agree = ref(false)
+const show = ref(false);
+const agree = ref(false);
 
 const emit = defineEmits<{
   login: [channel: Channels];

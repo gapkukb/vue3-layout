@@ -5,7 +5,7 @@ interface Props extends PopupProps {
   name: ModalNames;
 }
 
-export const opens = ref<Set<ModalNames>>(new Set([ModalNames.CONVERSATION]));
+export const opens = ref<Set<ModalNames>>(new Set([]));
 
 export async function open(value: ModalNames | Props) {
   if (typeof value === 'number') {

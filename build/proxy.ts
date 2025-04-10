@@ -1,38 +1,25 @@
-import type { ProxyConfig } from "@rsbuild/core";
-const url: Record<string, string> = {
-  servebuild: "https://www.arenaplus.com",
-  serve: "https://arenaplus.uatext66ap.com",
-  // serve: 'http://10.32.3.68:8080',
-  // 'serve:fat': 'http://c66-frontend-laroplus-mobile.fat.com',
-  "serve:fat": "http://c66-frontend-laroplus-mobile.dgfat.com",
-  "serve:prod": "https://autotest.arenaplus.ph",
-  preview: "https://arenaplus.uatext66ap.com",
-  // preview: 'https://autotest.arenaplus.ph',
-};
+import type { ProxyConfig } from '@rsbuild/core';
 
-const finallyUrl = url[process.env.npm_lifecycle_event!];
+export default (<ProxyConfig>{
+  ...createProxy('/local', 'http://10.32.3.68:8080'),
+  ...createProxy('/fat', 'http://c66-frontend-laroplus-mobile.dgfat.com'),
+  ...createProxy('/uat', 'https://arenaplus.uatext66ap.com'),
+  ...createProxy('/prod', 'https://autotest.arenaplus.ph'),
+  ...createProxy('/_glaxy_c66_', 'https://arenaplus.uatext66ap.com'),
+});
 
-console.log(
-  `\n+++++++++++++++++++++  proxy ==> ${finallyUrl}  +++++++++++++++++++++\n`
-);
-
-// export default <ProxyConfig>[
-//   {
-//     context: ["/_thirdpart_api_", "/_front_api_"],
-//     logLevel: "debug",
-//     target: "https://arenaplus.uatext66ap.com",
-//     // pathRewrite: {
-//     //   "/_thirdpart_api_": "",
-//     //   "/_front_api_": "",
-//     // },
-//   },
-// ];
-export default <ProxyConfig>{
-  "/api": {
-    target: "http://localhost:9980",
-    secure: false,
-    changeOrigin: true,
-    // pathRewrite: { "^/api": "" },
-    logLevel: "debug",
-  },
-};
+function createProxy(path: string, target: string): ProxyConfig {
+  return {
+    [path]: {
+      target,
+      secure: true,
+      changeOrigin: true,
+      pathRewrite: { '/uat': '' },
+      logLevel: 'debug',
+      onProxyReq: (proxyReq, req) => {
+        // http请求
+        console.log('[HPM] %s %s %s %s', req.method, req.originalUrl, '->', req.url);
+      },
+    },
+  };
+}
