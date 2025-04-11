@@ -31,6 +31,9 @@
         "noNonNullAssertion": "off",
         "noParameterAssign": "off",
         "useEnumInitializers": "off"
+      },
+      "complexity": {
+        "noBannedTypes": "off"
       }
     }
   }

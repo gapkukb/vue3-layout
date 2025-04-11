@@ -1,3 +1,6 @@
+import PVUV from './PVUV';
+import sensors from './sensors';
+
 /**
 前端监控系统
 
@@ -33,4 +36,16 @@ export default class Monitoring {
    * 1.用户行为监控：
    */
   static user() {}
+
+  /**
+   * 神策埋点
+   */
+
+  static sensors = sensors;
+
+  /**
+   * pvuv埋点
+   */
+
+  static pvuv = PVUV;
 }

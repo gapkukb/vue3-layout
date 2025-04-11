@@ -1,0 +1,4 @@
+export enum CODES {
+  CLICK_SPORT = 'PVUV_CLICK_SPORT',
+  VIEW_SPORT = 'PVUV_CLICK_SPORT',
+}

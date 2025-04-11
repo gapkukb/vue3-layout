@@ -23,6 +23,7 @@
     "lodash": "npm:lodash-es@^4.17.21",
     "mitt": "^3.0.1",
     "pinia": "^3.0.1",
+    "sa-sdk-javascript": "^1.27.4",
     "swiper": "^11.2.6",
     "ts-mixer": "^6.0.4",
     "vant": "^4.9.17",
