@@ -7,10 +7,10 @@ const observers = new Map<any, Observer>();
 const map = new Map<any, Observer>();
 const _default = new Observer();
 
-function getObserver(config?: IntersectionObserverInit) {
+function getObserver(config?: IntersectionObserverInit, key?: string) {
   if (!config) return _default;
 
-  const key = `${config.root?.constructor.name}-${config.rootMargin}-${config.threshold}`;
+  key ??= `${config.root?.constructor.name}-${config.rootMargin}-${config.threshold}`;
 
   if (observers.has(key)) return observers.get(key)!;
 
@@ -27,9 +27,9 @@ function parse(option: IntersectionOptionHandler): { handler: IntersectionHandle
 }
 
 export default {
-  observe(target: Element, option: IntersectionOptionHandler) {
+  observe(target: Element, option: IntersectionOptionHandler, key?: string) {
     const { handler, config } = parse(option);
-    const observer = getObserver(config);
+    const observer = getObserver(config, key);
     observer.observe(target, handler);
     if (observer === _default) return;
 

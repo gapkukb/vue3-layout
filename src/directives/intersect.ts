@@ -3,7 +3,7 @@ import observer, { type IntersectionOptionHandler } from '@/observers/intersecti
 
 export default (<ObjectDirective<Element, IntersectionOptionHandler>>{
   mounted(el, binding) {
-    observer.observe(el, binding.value);
+    observer.observe(el, binding.value, binding.arg);
   },
   updated(el, binding) {
     if (binding.value === binding.oldValue) return;
