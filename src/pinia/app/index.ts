@@ -1,19 +1,18 @@
-import { queryAppConfiguration } from '@/apis/app';
+import { queryAppConfiguration, queryWebToken } from '@/apis/app';
 import App from './App';
+import http from '@/apis/http';
 
 export default defineStore('app', () => {
   const configuration = ref<model.app.Configuration>({});
   const app = new App();
   const puzzleVerified = ref(false);
+  const webToken = ref();
 
   function updatePuzzleVerified(value: boolean) {
     puzzleVerified.value = value;
   }
 
-  function updateConfiguration() {
-    queryAppConfiguration({}).then((res) => {
-      configuration.value = res;
-    });
+  async function updateConfiguration() {
     return queryAppConfiguration({}, { adapter: 'fetch' }).then((res) => {
       configuration.value = res;
     });

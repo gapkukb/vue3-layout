@@ -8,6 +8,9 @@ importers:
 
   .:
     dependencies:
+      '@af-utils/scrollend-polyfill':
+        specifier: ^0.0.14
+        version: 0.0.14
       '@vueuse/core':
         specifier: ^13.0.0
         version: 13.0.0(vue@3.5.13(typescript@5.8.2))
@@ -44,6 +47,9 @@ importers:
       sa-sdk-javascript:
         specifier: ^1.27.4
         version: 1.27.4
+      smoothscroll-polyfill:
+        specifier: ^0.4.4
+        version: 0.4.4
       swiper:
         specifier: ^11.2.6
         version: 11.2.6
@@ -185,6 +191,9 @@ packages:
 
   '@adobe/css-tools@4.3.3':
     resolution: {integrity: sha512-rE0Pygv0sEZ4vBWHlAgJLGDU7Pm8xoO6p3wsEceb7GYAjScrOHpEo8KK/eVkAcnSM+slAEtXjA2JpdjLp4fJQQ==}
+
+  '@af-utils/scrollend-polyfill@0.0.14':
+    resolution: {integrity: sha512-pThXK3XqbWeJHJJAEzhNqCEgOiZ7Flk/Wj/uM6+TGJuA/3n/NeKP3C+5o4jt79i46Cc18iA0kJaMd056GQTfYQ==}
 
   '@ampproject/remapping@2.3.0':
     resolution: {integrity: sha512-30iZtAPgz+LTIYoeivqYo853f02jBYSd5uGnGpkFV0M3xOt9aN73erkgYAmZU43x4VfqcnLxW9Kpg3R5LC4YYw==}
@@ -3877,6 +3886,9 @@ packages:
     resolution: {integrity: sha512-qMCMfhY040cVHT43K9BFygqYbUPFZKHOg7K73mtTWJRb8pyP3fzf4Ixd5SzdEJQ6MRUg/WBnOLxghZtKKurENQ==}
     engines: {node: '>=10'}
 
+  smoothscroll-polyfill@0.4.4:
+    resolution: {integrity: sha512-TK5ZA9U5RqCwMpfoMq/l1mrH0JAR7y7KRvOBx0n2869aLxch+gT9GhN3yUfjiw+d/DiF1mKo14+hd62JyMmoBg==}
+
   snapdragon-node@2.1.1:
     resolution: {integrity: sha512-O27l4xaMYt/RSQ5TR3vpWCAB5Kb/czIcqUFOM/C4fYcLnbZUc1PkjTAMjof2pBWaSTwOUd6qUHcFGVGj7aIwnw==}
     engines: {node: '>=0.10.0'}
@@ -4683,6 +4695,8 @@ packages:
 snapshots:
 
   '@adobe/css-tools@4.3.3': {}
+
+  '@af-utils/scrollend-polyfill@0.0.14': {}
 
   '@ampproject/remapping@2.3.0':
     dependencies:
@@ -8706,6 +8720,8 @@ snapshots:
       ansi-styles: 4.3.0
       astral-regex: 2.0.0
       is-fullwidth-code-point: 3.0.0
+
+  smoothscroll-polyfill@0.4.4: {}
 
   snapdragon-node@2.1.1:
     dependencies:

@@ -12,6 +12,7 @@
     "stylelint": "stylelint src/**/*.{scss,styl,vue}  --fix --quiet-deprecation-warnings"
   },
   "dependencies": {
+    "@af-utils/scrollend-polyfill": "^0.0.14",
     "@vueuse/core": "^13.0.0",
     "animate.css": "^4.1.1",
     "axios": "^1.8.3",
@@ -24,6 +25,7 @@
     "mitt": "^3.0.1",
     "pinia": "^3.0.1",
     "sa-sdk-javascript": "^1.27.4",
+    "smoothscroll-polyfill": "^0.4.4",
     "swiper": "^11.2.6",
     "ts-mixer": "^6.0.4",
     "vant": "^4.9.17",

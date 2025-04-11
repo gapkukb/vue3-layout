@@ -4,6 +4,7 @@ import type { Http } from '@/http';
 import { useApp, useUser } from '@/pinia';
 import { random, range, times } from 'lodash';
 import axios from 'axios';
+import { queryWebToken } from './app';
 
 const client = (() => {
   if (env.glife) return 'miniapp_glife';
@@ -25,6 +26,9 @@ const commonHeaders = {
   Lang: 'en',
 };
 
+let webToken = localStorage.getItem('webToken');
+const promise: Promise<any> | null = null;
+
 /**
  * 签名插件
  */
@@ -32,54 +36,28 @@ export default function _signPlugin() {
   return function signPlugin(http: Http) {
     http.setHeader(commonHeaders);
 
-    http.inst.interceptors.request.use((config) => {
+    http.inst.interceptors.request.use(async (config) => {
       const user = useUser();
       const app = useApp();
 
-      // const key = config.method!.toLocaleLowerCase() === 'get' ? 'params' : 'data';
+      console.log('config.url', config.url);
+      if (!webToken && config.url !== '/webToken') {
+        const { info } = await queryWebToken();
+        webToken = info;
+        localStorage.setItem('webToken', webToken);
+      }
 
-      // config[key] = Object.assign({}, config[key], common, {});
+      const key = config.method!.toLocaleLowerCase() === 'get' ? 'params' : 'data';
 
-      // const qid = MD5(Date.now() + times(6, () => random(0, 9)).join('')).toString();
+      config[key] = Object.assign({}, config[key], common, {});
 
-      // config.headers.Accept = 'application/json';
-      // config.headers.Qid = qid;
-      // config.headers.Sign = MD5(sort(config[key]) + qid + commonHeaders.AppId + commonHeaders.V);
-      // config.headers.platform = 'H5';
+      const qid = MD5(Date.now() + times(6, () => random(0, 9)).join('')).toString();
 
-      // axios.post(
-      //   'http://localhost:8080/uat/_glaxy_c66_/front/siteinfo',
-      //   { productId: 'C66', tenant: 'AP', client: 'h5' },
-      //   {
-      //     // adapter: 'fetch',
-      //     headers: {
-      //       accept: 'application/json',
-      //       'accept-language': 'en-US,en;q=0.9,zh-CN;q=0.8,zh;q=0.7',
-      //       afappid: 'web-arenaplus.net',
-      //       appid: 'C66H501',
-      //       appsflyerid: '',
-      //       'cache-control': 'no-cache',
-      //       container: 'BROWSER',
-      //       'content-type': 'application/json',
-      //       'coraool-appid': '26439',
-      //       'coraool-deviceid': '9qj27w_1744274533395',
-      //       domainname: 'localhost',
-      //       idfv: '',
-      //       lang: 'en',
-      //       package: 'APPLE',
-      //       platform: 'H5',
-      //       pragma: 'no-cache',
-      //       qid: '42d5da2818180e95c8802dcf0e43cf9a',
-      //       'sec-fetch-dest': 'empty',
-      //       'sec-fetch-mode': 'cors',
-      //       'sec-fetch-site': 'same-origin',
-      //       sign: '615fb376935df6d9098bba0c53c7e3da',
-      //       token: '6sNvgv4wu0KojwTO8gRFTdhC8IQzLPx4M8ZRT0WJBwpaZ5E8lQwUShfItikUmF1Vpihxao+28heKOuGviQKgWTuFQDg+S1tlMMocfBudyC7we4xqkFvXWQ==',
-      //       v: '1.0.0',
-      //     },
-      //   },
-      // );
-      // console.log('sign sign sign');
+      config.headers.Accept = 'application/json';
+      config.headers.Qid = qid;
+      config.headers.Sign = MD5(sort(config[key]) + qid + commonHeaders.AppId + commonHeaders.V);
+      config.headers.platform = 'H5';
+      config.headers.token = webToken;
 
       return config;
     });
@@ -89,39 +67,3 @@ export default function _signPlugin() {
 function sort(object: object) {
   return JSON.stringify(object).split('').sort().reverse().join('');
 }
-
-// fetch("http://localhost:8081/_glaxy_c66_/front/siteinfo", {
-//   "headers": {
-//     "accept": "application/json",
-//     "accept-language": "en-US,en;q=0.9,zh-CN;q=0.8,zh;q=0.7",
-//     "afappid": "web-arenaplus.net",
-//     "appid": "C66H501",
-//     "appsflyerid": "",
-//     "cache-control": "no-cache",
-//     "container": "BROWSER",
-//     "content-type": "application/json",
-//     "coraool-appid": "26439",
-//     "coraool-deviceid": "9qj27w_1744274533395",
-//     "domainname": "localhost",
-//     "idfv": "",
-//     "lang": "en",
-//     "nnt": "1744278996",
-//     "package": "APPLE",
-//     "platform": "H5",
-//     "pragma": "no-cache",
-//     "qid": "42d5da2818180e95c8802dcf0e43cf9a",
-//     "sec-fetch-dest": "empty",
-//     "sec-fetch-mode": "cors",
-//     "sec-fetch-site": "same-origin",
-//     "sign": "615fb376935df6d9098bba0c53c7e3da",
-//     "token": "6sNvgv4wu0KojwTO8gRFTdhC8IQzLPx4M8ZRT0WJBwpaZ5E8lQwUShfItikUmF1Vpihxao+28heKOuGviQKgWTuFQDg+S1tlMMocfBudyC7we4xqkFvXWQ==",
-//     "ttnn": "05xu4qIsBZJ0rV4TvLAwpHktgpUXZq6NJdWA6gUBTn4%3D",
-//     "v": "1.0.0"
-//   },
-//   "referrer": "http://localhost:8081/foryou",
-//   "referrerPolicy": "strict-origin-when-cross-origin",
-//   "body": "{\"productId\":\"C66\",\"tenant\":\"AP\",\"client\":\"h5\"}",
-//   "method": "POST",
-//   "mode": "cors",
-//   "credentials": "include"
-// });
