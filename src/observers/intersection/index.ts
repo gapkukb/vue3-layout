@@ -17,6 +17,8 @@ function getAndSetIfNeed(config?: IntersectionObserverInit, key?: string): { obs
   if (observers.has(key)) {
     observer = observers.get(key)!;
   } else {
+    console.log('new observer', key);
+
     observer = new Observer(config);
     observers.set(key, observer);
   }
@@ -36,11 +38,12 @@ export default {
     const { handler, config } = parseOption(option);
     const { observer, key: k } = getAndSetIfNeed(config, key);
     observer.observe(el, handler);
+    Reflect.set(el, ATTR_OB, observer);
 
     if (observer === defaultObserver) return;
 
-    Reflect.set(el, ATTR_OB, observer);
     const count = counter.get(observer) || 0;
+
     counter.set(observer, count + 1);
     Reflect.set(el, ATTR_OB_KEY, k);
   },
@@ -48,7 +51,6 @@ export default {
     const observer = Reflect.get(el, ATTR_OB) as Observer;
     observer.unobserve(el);
     if (observer === defaultObserver) return;
-
     const count = counter.get(observer);
     if (count && count > 1) {
       counter.set(observer, count - 1);

@@ -6,7 +6,7 @@ export default async function boot() {
   const app = useApp();
 
   await Promise.all([hello(), polyfill]);
-  await app.updateConfiguration();
+  // await app.updateConfiguration();
 
   return 1;
 }
