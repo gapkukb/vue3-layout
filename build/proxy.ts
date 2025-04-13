@@ -12,7 +12,7 @@ export default Object.keys(proxy).reduce((map, path) => {
   map[path] = <ProxyOptions>{
     target: proxy[path],
     // secure: true,
-    changeOrigin: true,
+    changeOrigin: false,
     pathRewrite: { [`^${path}`]: '' },
     logLevel: 'debug',
     // onProxyReq(proxyReq, req) {

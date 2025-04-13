@@ -1,25 +1,24 @@
 export type ResizeHandler = (rect: DOMRectReadOnly, entry: ResizeObserverEntry) => void;
 
-const staging = new WeakMap<Element, ResizeHandler>();
+const store = new WeakMap<Element, ResizeHandler>();
 
+function callback(entries: ResizeObserverEntry[]) {
+  for (const entry of entries) {
+    const callback = store.get(entry.target as Element);
+    callback?.(entry.contentRect, entry);
+  }
+}
 class Observer extends ResizeObserver {
   constructor() {
-    super(Observer.#onentry);
+    super(callback);
   }
   observe(target: Element, { callback, ...options }: ResizeObserverOptions & { callback: ResizeHandler }) {
-    staging.set(target, callback);
+    store.set(target, callback);
     return super.observe(target, options);
   }
   unobserve(target: Element) {
-    staging.delete(target);
+    store.delete(target);
     return super.unobserve(target);
-  }
-
-  static #onentry(entries: ResizeObserverEntry[]) {
-    for (const entry of entries) {
-      const callback = staging.get(entry.target as Element);
-      callback?.(entry.contentRect, entry);
-    }
   }
 }
 

@@ -7,9 +7,15 @@ export interface MutationOption extends MutationObserverInit {
 
 const store = new WeakMap<Node, MutationHandler>();
 
+function callback(entries: MutationRecord[]) {
+  for (const entry of entries) {
+    store.get(entry.target)?.(entry);
+  }
+}
+
 class Observer extends MutationObserver {
   constructor() {
-    super(Observer.#callback);
+    super(callback);
   }
 
   #parse(option: MutationOption | MutationHandler) {
@@ -30,12 +36,6 @@ class Observer extends MutationObserver {
   unobserve(target: Node) {
     store.delete(target);
   }
-
-  static #callback = (entries: MutationRecord[]) => {
-    for (const entry of entries) {
-      store.get(entry.target)?.(entry);
-    }
-  };
 }
 
 export default new Observer();

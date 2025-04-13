@@ -5,6 +5,7 @@ import { useApp, useUser } from '@/pinia';
 import { random, range, times } from 'lodash';
 import axios from 'axios';
 import { queryWebToken } from './app';
+import type { RequestConfig } from '@/http/core';
 
 const client = (() => {
   if (env.glife) return 'miniapp_glife';
@@ -26,9 +27,11 @@ const commonHeaders = {
   Lang: 'en',
 };
 
-let webToken = localStorage.getItem('webToken');
-const promise: Promise<any> | null = null;
-
+// let webToken = localStorage.getItem('webToken');
+let webToken;
+function isWebToken(config: RequestConfig) {
+  return '__webToken' in config;
+}
 /**
  * 签名插件
  */
@@ -41,9 +44,13 @@ export default function _signPlugin() {
       const app = useApp();
 
       console.log('config.url', config.url);
-      if (!webToken && config.url !== '/webToken') {
-        const { info } = await queryWebToken();
-        webToken = info;
+      console.log(config);
+
+      if (!webToken && !isWebToken(config)) {
+        const a = await queryWebToken();
+        console.log(a.data.body.info);
+
+        webToken = a.data.body.info;
         localStorage.setItem('webToken', webToken);
       }
 

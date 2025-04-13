@@ -3,7 +3,9 @@ import axios, { mergeConfig, type AxiosInstance, type AxiosRequestConfig, type C
 type HttpMethd = Extract<Lowercase<Method>, 'get' | 'post' | 'put' | 'delete'>;
 type Dispatcher = ReturnType<(typeof Http)['_create']>;
 type HttpMethds = Record<HttpMethd, Dispatcher>;
-
+export interface RequestConfig extends AxiosRequestConfig {
+  [key: string | number | symbol]: any;
+}
 export default class Http implements HttpMethds {
   private static _withoutInstance = true;
   private static _methods: HttpMethds = {
@@ -15,9 +17,9 @@ export default class Http implements HttpMethds {
 
   private static _create(method: HttpMethd) {
     const key: keyof AxiosRequestConfig = method === 'get' ? 'params' : 'data';
-    return function wrap<Res = any, Req extends Record<string | number, any> | unknown = unknown>(this: Http, url: string, wrapperOption?: AxiosRequestConfig) {
+    return function wrap<Res = any, Req extends Record<string | number, any> | unknown = unknown>(this: Http, url: string, wrapperOption?: RequestConfig) {
       const _this = this as Http;
-      return function dispatch(payload: Req, option?: AxiosRequestConfig) {
+      return function dispatch(payload?: Req, option?: RequestConfig) {
         if (wrapperOption && option) {
           option = mergeConfig(wrapperOption, option);
         } else {
@@ -42,8 +44,6 @@ export default class Http implements HttpMethds {
 
   constructor(option: CreateAxiosDefaults) {
     this.inst = axios.create(option);
-    console.dir(this.inst);
-
     this.#mergeMethods();
   }
 
@@ -74,12 +74,13 @@ export default class Http implements HttpMethds {
 
   setHeader(headers: Record<string, any>): void;
   setHeader(headerName: string, value: any): void;
-  setHeader(headerName: Record<string, any> | string, value?: any): void {
+  setHeader(headerName: Record<string, any> | string, value?: any): this {
     if (typeof headerName === 'string') {
       this.inst.defaults.headers.common[headerName] = value;
     } else {
       Object.assign(this.inst.defaults.headers.common, headerName);
     }
+    return this;
   }
 
   #mergeMethods() {

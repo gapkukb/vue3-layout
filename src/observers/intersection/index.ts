@@ -3,23 +3,28 @@ import Observer from './Observer';
 import type { IntersectionHandler, IntersectionOptionHandler } from './types.d';
 export * from './types.d';
 
-const observers = new Map<any, Observer>();
-const map = new Map<any, Observer>();
-const _default = new Observer();
+const observers = new Map<string, Observer>();
+const counter = new WeakMap<Observer, number>();
+const defaultObserver = new Observer();
+const ATTR_OB = '__ob__';
+const ATTR_OB_KEY = '__ob_key__';
 
-function getObserver(config?: IntersectionObserverInit, key?: string) {
-  if (!config) return _default;
+function getAndSetIfNeed(config?: IntersectionObserverInit, key?: string): { observer: Observer; key: string | undefined } {
+  if (!config) return { observer: defaultObserver, key };
 
+  let observer: Observer;
   key ??= `${config.root?.constructor.name}-${config.rootMargin}-${config.threshold}`;
+  if (observers.has(key)) {
+    observer = observers.get(key)!;
+  } else {
+    observer = new Observer(config);
+    observers.set(key, observer);
+  }
 
-  if (observers.has(key)) return observers.get(key)!;
-
-  const ob = new Observer(config);
-  observers.set(key, ob);
-  return ob;
+  return { observer, key };
 }
 
-function parse(option: IntersectionOptionHandler): { handler: IntersectionHandler; config?: IntersectionObserverInit } {
+function parseOption(option: IntersectionOptionHandler): { handler: IntersectionHandler; config?: IntersectionObserverInit } {
   if (typeof option === 'function') return { handler: option };
 
   const { handler, ...config } = option;
@@ -27,16 +32,32 @@ function parse(option: IntersectionOptionHandler): { handler: IntersectionHandle
 }
 
 export default {
-  observe(target: Element, option: IntersectionOptionHandler, key?: string) {
-    const { handler, config } = parse(option);
-    const observer = getObserver(config, key);
-    observer.observe(target, handler);
-    if (observer === _default) return;
+  observe(el: Element, option: IntersectionOptionHandler, key?: string) {
+    const { handler, config } = parseOption(option);
+    const { observer, key: k } = getAndSetIfNeed(config, key);
+    observer.observe(el, handler);
 
-    map.set(target, observer);
+    if (observer === defaultObserver) return;
+
+    Reflect.set(el, ATTR_OB, observer);
+    const count = counter.get(observer) || 0;
+    counter.set(observer, count + 1);
+    Reflect.set(el, ATTR_OB_KEY, k);
   },
-  unobserve(target: Element) {
-    (map.get(target) || _default).unobserve(target);
-    map.delete(target);
+  unobserve(el: Element) {
+    const observer = Reflect.get(el, ATTR_OB) as Observer;
+    observer.unobserve(el);
+    if (observer === defaultObserver) return;
+
+    const count = counter.get(observer);
+    if (count && count > 1) {
+      counter.set(observer, count - 1);
+      return;
+    }
+
+    observer.disconnect();
+    counter.delete(observer);
+    const key = Reflect.get(el, ATTR_OB_KEY);
+    observers.delete(key);
   },
 };
