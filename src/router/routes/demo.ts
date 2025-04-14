@@ -17,5 +17,10 @@ export default (<RouteRecordRaw>{
       name: ModalNames.CONVERSATION,
       component: () => import('@/views/conversation/index.vue'),
     },
+    {
+      path: '/demo',
+      name: ModalNames.CONVERSATION,
+      component: () => import('@/views/demo/index.vue'),
+    },
   ],
 });
