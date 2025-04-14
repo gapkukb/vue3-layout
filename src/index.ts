@@ -9,6 +9,6 @@ import directives from './directives';
 
 const app = createApp(App).use(pinia).use(router).use(directives);
 
-boot().then(() => {
+boot(app).then(() => {
   app.mount('#app');
 });

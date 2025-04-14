@@ -17,8 +17,6 @@ function getAndSetIfNeed(config?: IntersectionObserverInit, key?: string): { obs
   if (observers.has(key)) {
     observer = observers.get(key)!;
   } else {
-    console.log('new observer', key);
-
     observer = new Observer(config);
     observers.set(key, observer);
   }
@@ -34,10 +32,22 @@ function parseOption(option: IntersectionOptionHandler): { handler: Intersection
 }
 
 export default {
-  observe(el: Element, option: IntersectionOptionHandler, key?: string) {
+  observe(el: Element, option: IntersectionOptionHandler, key?: string, once?: boolean) {
     const { handler, config } = parseOption(option);
     const { observer, key: k } = getAndSetIfNeed(config, key);
-    observer.observe(el, handler);
+    if (once) {
+      const oldHandler = handler;
+      function _handler(isIntersecting: boolean, entry: IntersectionObserverEntry) {
+        if (isIntersecting) {
+          observer.unobserve(el);
+        }
+        oldHandler(isIntersecting, entry);
+      }
+
+      observer.observe(el, _handler);
+    } else {
+      observer.observe(el, handler);
+    }
     Reflect.set(el, ATTR_OB, observer);
 
     if (observer === defaultObserver) return;

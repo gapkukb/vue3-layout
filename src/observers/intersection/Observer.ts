@@ -2,9 +2,15 @@ import type { IntersectionHandler } from './types.d';
 
 const store = new WeakMap<Element, IntersectionHandler>();
 
+function callback(entries: IntersectionObserverEntry[]) {
+  for (const entry of entries) {
+    store.get(entry.target)?.(entry.isIntersecting, entry);
+  }
+}
+
 export default class Observer extends IntersectionObserver {
   constructor(options?: IntersectionObserverInit) {
-    super(Observer.#callback, options);
+    super(callback, options);
   }
 
   //@ts-ignore
@@ -17,10 +23,4 @@ export default class Observer extends IntersectionObserver {
     store.delete(target);
     super.unobserve(target);
   }
-
-  static #callback = (entries: IntersectionObserverEntry[]) => {
-    for (const entry of entries) {
-      store.get(entry.target)?.(entry.isIntersecting, entry);
-    }
-  };
 }
