@@ -2,9 +2,8 @@
 const phone = ref("");
 
 const regexp = /^(9\d{2})\s?(\d{1,3})\s?(\d{1,4})?$/g;
-function replacer(_, p1, p2, p3) {
-
-  return [p1, p2, p3].filter(Boolean).join(' ')
+function replacer(_: string, v1: string, v2: string, v3: string) {
+  return [v1, v2, v3].filter(Boolean).join(' ')
 }
 function formatter(value: string) {
   return value.replace(regexp, replacer);
