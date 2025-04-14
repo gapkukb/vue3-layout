@@ -17,7 +17,7 @@ const len = ref(0)
 <template>
   <div>Home</div>
   <van-button @click="len = len ? 0 : 10">切换</van-button>
-  <div v-for="i in len" v-intersect:1="{ handler: onInOutView, margin: '0' }" class="h-300"></div>
+  <div v-for="i in len" v-intersect:1="{ handler: onInOutView, rootMargin: '0' }" class="h-300"></div>
 </template>
 
 <style lang="scss"></style>

@@ -34,4 +34,15 @@ export default (<RouteRecordRaw[]>[
       title: 'Forgot Password',
     },
   },
+  {
+    name: RouteNames.PROMOTIONS,
+    path: '/promo',
+    components: {
+      default: () => import('@/views/promotions/index.vue'),
+    },
+
+    meta: {
+      title: 'promotions',
+    },
+  },
 ]);
