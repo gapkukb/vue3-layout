@@ -19,6 +19,7 @@
     "crypto-es": "^2.1.0",
     "crypto-js": "^4.2.0",
     "firebase": "^11.6.0",
+    "gsap": "^3.12.7",
     "iconify-icon": "^2.3.0",
     "localforage": "^1.10.0",
     "lodash": "npm:lodash-es@^4.17.21",

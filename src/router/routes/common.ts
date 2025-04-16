@@ -45,4 +45,9 @@ export default (<RouteRecordRaw[]>[
       title: 'promotions',
     },
   },
+  {
+    name: RouteNames.PROMOTIONS,
+    path: '/gsap',
+    component: () => import('@/views/demo/Gsap.vue'),
+  },
 ]);
