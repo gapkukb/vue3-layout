@@ -5,12 +5,14 @@ export default class Tabs<T extends Tab = Tab, Prop extends ClassProperties<T> =
   protected rawTabs: T[] = [];
   #mapper = new Map<T['id'], T>();
 
-  public getTab(id: T['id']): T | undefined {
+  public get(id: T['id']): T | undefined {
     return this.#mapper.get(id);
   }
 
-  public getIndex(tab: T) {
-    return this.rawTabs.findIndex((t) => t === tab);
+  public index(tab: T | T['id']) {
+    const target = tab instanceof Tab ? tab : this.get(tab);
+    if (!target) return -1;
+    return this.rawTabs.findIndex((t) => t === target);
   }
 
   public add(...tabs: T[]): this {
@@ -26,18 +28,18 @@ export default class Tabs<T extends Tab = Tab, Prop extends ClassProperties<T> =
   }
 
   public show(id: T['id']): this {
-    this.getTab(id)?.show();
+    this.get(id)?.show();
     return this;
   }
 
   public hide(id: T['id']): this {
-    this.getTab(id)?.hide();
+    this.get(id)?.hide();
     return this;
   }
 
   public update<K extends keyof Prop>(id: T['id'], props: Prop | K, value?: Prop[K]): this {
     //@ts-ignore
-    this.getTab(id)?.update(props, value);
+    this.get(id)?.update(props, value);
     return this;
   }
 
@@ -55,6 +57,7 @@ export default class Tabs<T extends Tab = Tab, Prop extends ClassProperties<T> =
 
   public destroy() {
     this.rawTabs = [];
+    this.#mapper.clear();
     for (const key of Object.getOwnPropertyNames(this)) {
       if (typeof this[key] === 'function') continue;
       if (this[key] instanceof Tab) this[key].destroy();

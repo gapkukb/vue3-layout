@@ -45,16 +45,44 @@ export default class Tab {
   hide() {
     this.visible = false;
   }
+
   toggle(visible?: boolean) {
     this.visible = visible ?? !this.visible;
   }
 
-  moveTo(sort: number) {
-    if (this.sort === sort) return;
-    this.sort = sort;
+  before(to: this) {
+    if (this.sort < to.sort) {
+      // down
+      this.sort = to.sort;
+    } else {
+      // up
+      this.sort = to.sort + 1;
+    }
+  }
+
+  after(to: this) {
+    if (this.#equal(this, to)) return this;
+    this.sort = to.sort;
+  }
+
+  swap(to: this) {
+    if (this.#equal(this, to)) return this;
+    const from = this.sort;
+    this.sort = to.sort;
+    to.sort = from;
+  }
+
+  move(to: number) {
+    to = Math.max(0, to);
+    this.sort = to;
+    return this;
   }
 
   destroy() {
     this.ctx = null as any;
+  }
+
+  #equal(from: this, to: this) {
+    return from === to || from.sort === to.sort;
   }
 }

@@ -16,7 +16,7 @@ export default class TestTabs extends Tabs<MatchTab> {
     this.standing.visible = false;
     this.analysis.visible = false;
     this.lineup.visible = false;
-    this.add(this.bet).add(this.chat).add(this.picks).add(this.analysis).add(this.standing).add(this.lineup);
+    this.add(this.bet, this.chat, this.picks, this.analysis, this.standing, this.lineup);
   }
 
   public compute(m: any): MatchTab[] {
@@ -33,20 +33,20 @@ export default class TestTabs extends Tabs<MatchTab> {
     }
 
     if (m.ongoing) {
-      const sort1 = this.analysis.sort;
+      const n1 = this.analysis.sort;
       const sort2 = this.standing.sort;
       const sort3 = this.lineup.sort;
 
-      this.standing.sort = sort1;
-      this.lineup.sort = sort2;
-      this.analysis.sort = sort3;
+      this.standing.move(n1);
+      this.lineup.move(sort2);
+      this.analysis.move(sort3);
     }
 
     return super.compute();
   }
 
-  monitor(id: any, match: model.sport.Match) {
-    const tab = this.getTab(id)!;
+  public monitor(id: any, match: model.sport.Match) {
+    const tab = this.get(id)!;
     if (tab.featureId) {
       // 曝光埋点
     } else if (tab.statisticsType) {

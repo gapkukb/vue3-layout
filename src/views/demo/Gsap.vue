@@ -13,7 +13,7 @@ const gameMaps = computed(() => [...new Set(match.value.markets?.map(item => ite
 const betTabs = new BetTabs(gameMaps.value, match.value.playerBetMark)
 const tabs = computed(() => matchTabs.compute(match.value))
 const tabs2 = computed(() => betTabs.compute(gameMaps.value, match.value.playerBetMark))
-const betTab = computed(() => betTabs.getTab(activeTab2.value))
+const betTab = computed(() => betTabs.get(activeTab2.value))
 
 const canvas = templateRef<HTMLCanvasElement>('canvas')
 // console.log(mock);
@@ -30,6 +30,7 @@ const canvas = templateRef<HTMLCanvasElement>('canvas')
 
 function onChange(id: any) {
     matchTabs.monitor(id, match.value)
+    betTabs.monitor(id, match.value)
 }
 
 </script>
@@ -47,7 +48,7 @@ function onChange(id: any) {
         </van-tab>
     </van-tabs>
 
-    <van-tabs v-model:active="activeTab2">
+    <van-tabs v-model:active="activeTab2" @change="onChange">
         <van-tab v-for="tab in tabs2" :key="tab.id" :name="tab.id" :title="tab.name"
             title-class="flex items-center gap-40">
             <template v-if="tab.icon" #title>

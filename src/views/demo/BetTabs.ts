@@ -42,7 +42,7 @@ export default class BetTabs extends Tabs {
     console.log(this.#mapper);
   }
 
-  public getTab(id: string | number): BetTab | undefined {
+  public get(id: string | number): BetTab | undefined {
     if (id === -1) return this.all;
     if (id === 10086) return this.player;
     return this.#mapper[id];
@@ -52,5 +52,32 @@ export default class BetTabs extends Tabs {
     this.player.toggle(playerBetMark);
     const tabs = gameMaps.map((item: any) => this.#mapper[item]);
     return [...this.rawTabs.slice(0, 2), ...tabs].sort((a, b) => a.sort - b.sort);
+  }
+
+  public monitor(id: any, match: model.sport.Match) {
+    const tab = this.get(id)!;
+    if (tab.featureId) {
+      // 曝光埋点
+    } else if (tab.statisticsType) {
+      // 统计埋点
+    }
+    // 神策埋点
+    const payload = {
+      match_id: match.matchId,
+      home_name: match.homeName,
+      away_name: match.awayName,
+      league_id: match.leagueId,
+      league_name: match.leagueName,
+      tab_name: tab.name,
+    };
+
+    console.log(payload);
+
+    // sensorsTrack('matchDetailPageTabclick', payload);
+  }
+
+  public destroy(): void {
+    this.#mapper = null as any;
+    super.destroy();
   }
 }
